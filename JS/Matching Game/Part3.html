@@ -1,0 +1,87 @@
+<!doctype html>
+<html>
+<head>
+	<title>Matching Game</title>
+	<style>
+		img {			
+			position: absolute;
+		}
+		div {
+			position: absolute;			
+		}
+		#leftSide {
+			top: 100px;
+			left: 0;
+			width: 49%;
+			height: 85%; 
+		}
+		#rightSide { 
+			top: 100px;
+			left: 49%;
+			width: 49%; 
+			height: 85%; 
+			border-left: 1px solid black; 
+		}
+		#renderImgHidden {
+			display: none;
+		}
+	</style>
+</head>
+<body onload="generateFaces();">	
+	<h1>Matching Game</h1>
+	<p>Click on the extra smiling face on the left.</p>
+	<!-- Render the image hidden so that i can get its width and height in the javascript -->
+	<img id="renderImgHidden" />
+	<div id="leftSide"></div>
+	<div id="rightSide"></div>
+	
+	<script type="text/javascript">
+		// Global Variables for starting faces and the source of the image
+		var numberOfFaces = 5;
+		var imgSrc = "http://home.cse.ust.hk/~rossiter/mooc/matching_game/smile.png";		
+		
+		// Get  the div elements to use later
+		var theLeftSide = document.getElementById("leftSide");
+		var theRightSide = document.getElementById("rightSide");
+
+		// set the src attribute of the hidden image so that we can use its size values
+		document.getElementById('renderImgHidden').src = imgSrc;
+		
+		// Function to generate faces within the div
+		function generateFaces() {
+			var sideWidth = theLeftSide.offsetWidth; // get the width of the container div
+			var sideHeight =  theLeftSide.offsetHeight; // get the height of the container div
+			
+			// Get the hidden image so that we can use its size rather than hard coded width and height
+			// This will allow for the image to be changed by just changing the variable imgSrc
+			var hiddenImg = document.getElementById("renderImgHidden");
+			for(var i = 0; i < numberOfFaces; i++) {
+				var img = document.createElement("img");
+				img.src = imgSrc
+				
+				// get the top value using the random function for range 0 to (div's height minus image height)
+				var imgTop = getRandomInt(0, sideHeight-hiddenImg.height);
+				// get the left values using the random function for range 0 to (div's width minus image width)
+				var imgLeft = getRandomInt(0, sideWidth-hiddenImg.width);				
+				img.style.top = imgTop + "px";
+				img.style.left = imgLeft + "px";
+				
+				// add the image to the container div
+				theLeftSide.appendChild(img);
+			}
+			// Make a clone of the left side with the images
+			var leftSideImages = theLeftSide.cloneNode(true);
+			leftSideImages.id = 'rightSideInside'; // change the id to avoid the styles addded to the left side id
+			theRightSide.appendChild(leftSideImages); // add the clone to the rightSide div
+			
+			leftSideImages.removeChild(leftSideImages.lastChild); // Remove the last face from the right side div
+		}
+		
+		// Function to get a Random integer between min and max 
+		// returns a random int.
+		function getRandomInt(min, max) {
+			return Math.floor(Math.random() * (max - min + 1)) + min;
+		}
+	</script>
+</body>
+</html>

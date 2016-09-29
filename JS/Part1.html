@@ -1,0 +1,55 @@
+<!doctype html>
+<html>
+<head>
+	<title>Color Guessing Game</title>
+</head>
+<body onload="do_game()">	
+	<script>
+		// setup array of colors
+		var colors = ["blue", "cyan", "gold", "gray", "green", "magenta", "orange", "red", "pink", "black", "yellow"];
+					
+		function do_game(){
+			// Global color variable defined inside a function without var
+			// pick color at random from the list of colors above
+			targetColor = colors[Math.floor(Math.random() * (colors.length-1))];
+			
+			// display the target to the user (to help them cheat)
+			document.write("<h1>Target Color = " + targetColor + "</h1>");
+						
+			var correct = false;
+			var guess_count = 0;
+			
+			while(!correct){
+				// local variable assigned to show how to pass into the check_guess function
+				var guess = prompt("I am thinking of one of these colors:\n\n"+ colors.sort().join() +"\n\nWhat color am I thinking off?");
+				
+				guess_count++; // increment the ammount of guesses
+				
+				if(check_guess(guess))
+				{
+					// alert the user that they have won the game
+					alert("Congratulations! You have guessed the color!\n\nIt took you " + guess_count + 
+						" guesses to finish the game!\n\nYou can see the color in the background.");
+					
+					correct = true; // set correct = true to leave the while loop
+				}
+			}
+			
+			// set the background color to the correct color
+			document.body.style.backgroundColor = targetColor;
+			
+			// display the ammount of guesses on the page also
+			document.write("<h1>Number of guesses = " + guess_count + "</h1>");
+		}
+		
+		// Function to check if the guess is correct
+		// returns true or false
+		function check_guess(guess){
+			if (guess == targetColor)
+				return true;
+			else
+				return false;
+		}
+	</script>
+</body>
+</html>
